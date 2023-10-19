@@ -45,7 +45,12 @@ class MP3DecoderHelix : public CommonHelix {
         }
 
         virtual ~MP3DecoderHelix(){
-            end();
+            if (decoder!=nullptr){
+                MP3FreeDecoder(decoder);
+                decoder = nullptr;
+            }
+            CommonHelix::end();
+            memset(&mp3FrameInfo,0,sizeof(MP3FrameInfo));
         }
 
         void setInfoCallback(MP3InfoCallback cb, void* caller=nullptr){
